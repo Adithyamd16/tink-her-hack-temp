@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SmallWins Profile</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI;
+  background:linear-gradient(135deg,#8e2de2,#ff7ac6);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.card{
+  background:white;
+  width:320px;
+  border-radius:25px;
+  text-align:center;
+  padding:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+}
+
+.header{
+  height:120px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#b993d6,#8ca6db);
+}
+
+.profile-img{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  border:5px solid white;
+  margin-top:-55px;
+  object-fit:cover;
+}
+
+input{
+  width:90%;
+  padding:10px;
+  margin:8px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+button{
+  background:linear-gradient(45deg,#ff7ac6,#8e2de2);
+  border:none;
+  padding:10px 20px;
+  border-radius:20px;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="header"></div>
+
+<img id="photo" class="profile-img"
+src="https://i.pravatar.cc/200">
+
+<br><br>
+
+<input type="file" id="photoInput">
+
+<h2 id="showName">Your Name</h2>
+
+<input id="name" placeholder="Your Name">
+<input id="phone" placeholder="Phone">
+<input id="email" placeholder="Email">
+
+<br>
+<button onclick="saveProfile()">Save</button>
+
+</div>
+
+<script>
+
+/* LOAD DATA */
+window.onload = function(){
+
+  let name = localStorage.getItem("profileName");
+  let photo = localStorage.getItem("profilePhoto");
+
+  if(name){
+    document.getElementById("showName").innerText = name;
+    document.getElementById("name").value = name;
+  }
+
+  if(photo){
+    document.getElementById("photo").src = photo;
+  }
+};
+
+
+/* SAVE PROFILE */
+function saveProfile(){
+
+  let name = document.getElementById("name").value;
+  localStorage.setItem("profileName", name);
+
+  document.getElementById("showName").innerText =
+  name || "Champion";
+
+  savePhoto();
+  alert("Saved!");
+}
+
+
+/* SAVE PHOTO */
+function savePhoto(){
+
+  let fileInput =
+  document.getElementById("photoInput");
+
+  if(fileInput.files.length === 0){
+    return;   // no photo selected
+  }
+
+  let reader = new FileReader();
+
+  reader.onload = function(e){
+    localStorage.setItem("profilePhoto", e.target.result);
+    document.getElementById("photo").src =
+    e.target.result;
+  };
+
+  reader.readAsDataURL(fileInput.files[0]);
+}
+
+</script>
+
+</body>
+</html>

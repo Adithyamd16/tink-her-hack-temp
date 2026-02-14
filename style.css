@@ -1,58 +1,134 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: #f9f5ff;
-  padding: 20px;
+/* 🌌 GLOBAL */
+body{
+  margin:0;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(135deg,#170dce,#b4cb08c9);
+  color:white;
+  min-height:100vh;
 }
 
-h1 {
-  color: #7b5cff;
+/* ⭐ NAVBAR */
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 30px;
+  background:rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
 }
 
-input {
-  padding: 10px;
-  width: 250px;
-  margin: 10px;
+nav a{
+  color:white;
+  text-decoration:none;
+  margin:0 10px;
+  font-weight:bold;
 }
 
-button {
-  padding: 10px 15px;
-  background-color: #7b5cff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
+nav button{
+  background:#ff7ac6;
+  border:none;
+  padding:8px 15px;
+  border-radius:20px;
+  color:white;
+  cursor:pointer;
 }
 
-button:hover {
-  background-color: #5a3ee0;
+/* 🌟 MAIN CARD */
+.card{
+  background:white;
+  color:black;
+  width:90%;
+  max-width:600px;
+  margin:25px auto;
+  padding:25px;
+  border-radius:25px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
 }
 
-.progress-bar {
-  width: 80%;
-  height: 20px;
-  background-color: #ddd;
-  margin: 20px auto;
-  border-radius: 10px;
+/* INPUTS */
+input,select{
+  padding:12px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  margin:5px;
 }
 
-.progress {
-  height: 100%;
-  width: 0%;
-  background-color: #7b5cff;
-  border-radius: 10px;
+/* BUTTON */
+button{
+  background:linear-gradient(45deg,#ff7ac6,#8e2de2);
+  border:none;
+  color:white;
+  padding:12px 20px;
+  border-radius:20px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+button:hover{
+  transform:scale(1.05);
 }
 
-li {
-  background: white;
-  margin: 5px auto;
-  padding: 10px;
-  width: 60%;
-  border-radius: 5px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+/* LIST ITEMS */
+li{
+  background:white;
+  color:black;
+  margin:10px auto;
+  width:90%;
+  max-width:600px;
+  padding:12px;
+  border-radius:15px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* TITLES */
+h1,h2,h3{
+  text-align:center;
+  margin-top:20px;
+}
+
+/* SMALL CALENDAR */
+#calendar{
+  max-width:500px;
+  margin:30px auto;
+  background:white;
+  color:black;
+  padding:15px;
+  border-radius:20px;
+}
+
+/* LOGIN PAGE */
+.center{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+
+/* Micro achievement widget */
+.micro-ach{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  width:260px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  color:white;
+  padding:10px 12px;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  z-index:60;
+}
+.micro-ach .ma-top{ display:flex; gap:10px; align-items:center }
+.micro-ach .ma-icon{ font-size:22px }
+.micro-ach .ma-body{ flex:1 }
+.micro-ach .ma-progress{ background:rgba(255,255,255,0.08); height:8px; border-radius:8px; margin-top:6px }
+.micro-ach .ma-bar{ height:100%; width:10%; background:linear-gradient(90deg,#ffd166,#ff7ac6); border-radius:8px }
+.micro-ach .ma-footer{ margin-top:8px; color:rgba(255,255,255,0.8); font-size:0.85rem }
+
+@media (max-width:520px){
+  .micro-ach{ right:10px; left:10px; width:auto }
 }

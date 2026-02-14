@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Forgot Password</title>
+
+<style>
+body{
+ font-family:Segoe UI;
+ background:linear-gradient(135deg,#8e2de2,#ff7ac6);
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ height:100vh;
+}
+
+.card{
+ background:white;
+ padding:30px;
+ border-radius:20px;
+ text-align:center;
+}
+
+input{
+ padding:10px;
+ margin:8px;
+ width:220px;
+}
+
+button{
+ padding:10px 20px;
+ border:none;
+ border-radius:20px;
+ background:#8e2de2;
+ color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<h2>Reset Password</h2>
+
+<input id="email" placeholder="Enter your email"><br>
+<button onclick="resetPassword()">Send Reset Email</button>
+
+<p><a href="login.html">Back to Login</a></p>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="firebase.js"></script>
+
+<script>
+function resetPassword(){
+
+ let email = document.getElementById("email").value.trim();
+
+ if(!email){
+   alert("Enter email first");
+   return;
+ }
+
+ auth.sendPasswordResetEmail(email)
+   .then(()=>{
+     alert("Password reset email sent 👍 Check your Gmail");
+     location="login.html";
+   })
+   .catch(error=>{
+     alert(error.message);
+   });
+}
+</script>
+
+</body>
+</html>

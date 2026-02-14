@@ -1,25 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>SmallWins</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <h1>🌟 SmallWins</h1>
-  <p>Celebrate your small victories!</p>
-
-  <input type="text" id="winInput" placeholder="Enter your small win">
-  <button onclick="addWin()">Add Win</button>
-
-  <h3>Total Points: <span id="points">0</span></h3>
-
-  <div class="progress-bar">
-    <div class="progress" id="progress"></div>
+<nav>
+  <div>
+    <strong>⭐ SmallWins</strong>
   </div>
+  <div>
+    <a href="calendar.html">Calendar</a>
+    <a href="game.html">Game</a>
+    <a href="profile.html">Profile</a>
+    <a href="login.html">Login</a>
+  </div>
+</nav>
 
-  <ul id="winList"></ul>
+<h1 id="welcome">Welcome back, Champion 💪</h1>
+<p id="quote"></p>
 
-  <script src="script.js"></script>
+<div class="card">
+  <input type="text" id="winInput" placeholder="Enter your small win">
+  <select id="mood">
+    <option value="happy">😊 Happy</option>
+    <option value="normal">😐 Normal</option>
+    <option value="sad">😞 Sad</option>
+  </select>
+  <button onclick="addWin()">Add Win</button>
+</div>
+
+<h3 style="text-align:center">Total Points: <span id="points">0</span></h3>
+<h3 style="text-align:center">🔥 Streak: <span id="streak">0</span> days</h3>
+
+<ul id="list"></ul>
+
+<script src="script.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Relax Game</title>
+
+<style>
+
+/* 🌌 SAME SMALLWINS THEME */
+body{
+ margin:0;
+ font-family:"Segoe UI",sans-serif;
+ background:linear-gradient(135deg,#8e2de2,#ff7ac6);
+ color:white;
+ text-align:center;
+ overflow:hidden;
+}
+
+/* TITLE */
+h1{
+ margin-top:20px;
+}
+
+/* SCORE CARD */
+.score{
+ background:rgba(255,255,255,0.2);
+ backdrop-filter:blur(10px);
+ padding:10px 20px;
+ border-radius:20px;
+ display:inline-block;
+ margin:10px;
+}
+
+/* RESET BUTTON */
+button{
+ background:white;
+ color:#8e2de2;
+ border:none;
+ padding:8px 15px;
+ border-radius:20px;
+ cursor:pointer;
+ margin-left:10px;
+}
+
+/* BUBBLES */
+.bubble{
+ position:absolute;
+ border-radius:50%;
+ animation:float 6s linear forwards;
+ cursor:pointer;
+ box-shadow:0 0 20px rgba(255,255,255,0.6);
+}
+
+/* FLOAT ANIMATION */
+@keyframes float{
+ 0%{transform:translateY(0);}
+ 100%{transform:translateY(-100vh);}
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🎮 Relax Game</h1>
+<p>Click bubbles to relax 😊</p>
+
+<div class="score">
+Score: <span id="score">0</span>
+<button onclick="resetGame()">Reset</button>
+</div>
+
+<script>
+
+let score = 0;
+
+/* CREATE BUBBLES */
+setInterval(()=>{
+
+ let b = document.createElement("div");
+ b.className = "bubble";
+
+ let size = Math.random()*40 + 30;
+
+ b.style.width = size+"px";
+ b.style.height = size+"px";
+ b.style.left = Math.random()*90+"vw";
+ b.style.top = "100vh";
+
+ /* cute colors */
+ let colors = ["#ff7ac6","#ffd6ff","#cdb4db","#bde0fe","#ffc8dd"];
+ b.style.background =
+ colors[Math.floor(Math.random()*colors.length)];
+
+ b.onclick = ()=>{
+   b.remove();
+   score++;
+   document.getElementById("score").innerText = score;
+ };
+
+ document.body.appendChild(b);
+
+ setTimeout(()=>b.remove(),6000);
+
+},800);
+
+/* RESET */
+function resetGame(){
+ score=0;
+ document.getElementById("score").innerText=0;
+ document.querySelectorAll(".bubble").forEach(b=>b.remove());
+}
+
+</script>
+
+</body>
+</html>

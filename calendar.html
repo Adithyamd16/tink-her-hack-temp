@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SmallWins Calendar</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+  <style>
+    body{
+      margin:0;
+      font-family:"Segoe UI",sans-serif;
+      background:linear-gradient(135deg,#6a11cb,#8e2de2,#c471ed,#a6c1ee);
+      min-height:100vh;
+      color:white;
+      text-align:center;
+    }
+
+    /* Simple top nav */
+    .topnav{
+      position:fixed;
+      top:0; left:0; right:0;
+      height:56px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 18px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      backdrop-filter: blur(8px);
+      z-index:30;
+      color:white;
+    }
+
+    .topnav .links a{ color:rgba(255,255,255,0.95); margin-right:12px; text-decoration:none }
+    .topnav button{ background:transparent; border:1px solid rgba(255,255,255,0.12); color:white; padding:8px 12px; border-radius:12px; cursor:pointer }
+    body{ padding-top:70px }
+
+    h1{
+      margin-top:30px;
+      font-size:32px;
+    }
+
+    /* 💜 Small glass calendar */
+    #calendar{
+      max-width:480px;
+      margin:30px auto;
+      padding:20px;
+      border-radius:25px;
+      background:rgba(255,255,255,0.2);
+      backdrop-filter:blur(15px);
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Buttons */
+    .fc-button{
+      background:#8e2de2 !important;
+      border:none !important;
+      border-radius:10px !important;
+    }
+
+    .fc-button:hover{
+      background:#c471ed !important;
+    }
+
+    /* Title */
+    .fc-toolbar-title{
+      color:white;
+      font-weight:bold;
+      font-size:22px;
+    }
+
+    /* Cute sticker */
+    .sticker{
+      font-size:30px;
+      margin-top:-10px;
+    }
+
+    /* Achievements badges */
+    .badge{
+      background:rgba(255,255,255,0.06);
+      color:white;
+      padding:10px 12px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:140px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.12);
+    }
+    .badge .icon{ font-size:20px }
+    .badge .meta .req{ font-size:0.8rem; color:rgba(255,255,255,0.7) }
+    .badge.earned{ background:linear-gradient(90deg,#ffd166,#ff7ac6); color:#2b2b2b }
+  </style>
+</head>
+
+<body>
+
+<div class="topnav">
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="calendar.html">Calendar</a>
+    <a href="game.html">Game</a>
+    <a href="#achievements">Achievements</a>
+    <a href="profile.html">Profile</a>
+  </div>
+  <div class="auth">
+    <a id="loginLink" href="login.html">Login</a>
+    <button id="logoutBtn" style="display:none" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<h1>📅 My Wins Calendar</h1>
+<div class="sticker" id="sticker"></div>
+<div id="calendar"></div>
+
+<!-- Achievements bar -->
+<div id="achievements" class="card" style="max-width:760px; margin:18px auto; text-align:left;">
+  <h3>Achievements</h3>
+  <div id="achList" style="display:flex;gap:12px;flex-wrap:wrap"></div>
+</div>
+
+<!-- Micro achievement tracker (encouragement widget) -->
+<div id="microAch" class="micro-ach" title="Progress & encouragement">
+  <div class="ma-top">
+    <div class="ma-icon">🎯</div>
+    <div class="ma-body">
+      <div id="ma-msg">Keep going — add a win today!</div>
+      <div class="ma-progress">
+        <div id="ma-bar" class="ma-bar"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ma-footer">
+    <small id="ma-next">Next: First Win</small>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+
+  let wins = JSON.parse(localStorage.getItem("wins")) || [];
+
+  /* 🌸 Month Stickers */
+  const stickers = [
+    "❄️☕","💖🌹","🌸🐣","🌼🐰",
+    "🌻🍦","🏖️🍉","🍍🌴","🌈🦋",
+    "🍁🎃","🎃👻","🧣☕","🎄🎁"
+  ];
+
+  document.getElementById("sticker").textContent =
+    stickers[new Date().getMonth()];
+
+  function color(m){
+    if(m=="happy") return "#6a11cb";
+    if(m=="sad") return "#ff4d6d";
+    return "#ffb703";
+  }
+
+  let calendar = new FullCalendar.Calendar(
+    document.getElementById("calendar"),
+    {
+      initialView:'dayGridMonth',
+      height:420,
+      events:wins.map(w=>({
+        title:w.text,
+        start:w.date,
+        backgroundColor:color(w.mood)
+      }))
+    }
+  );
+
+  calendar.render();
+
+  // ---- Navbar auth handling ----
+  const loginLink = document.getElementById('loginLink');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  function updateAuthUI(){
+    const logged = localStorage.getItem('loggedIn') === 'yes';
+    if(logged){
+      loginLink.style.display = 'none';
+      logoutBtn.style.display = 'inline-block';
+    } else {
+      loginLink.style.display = 'inline-block';
+      logoutBtn.style.display = 'none';
+    }
+  }
+
+  window.logout = function(){
+    localStorage.setItem('loggedIn','no');
+    updateAuthUI();
+    location = 'login.html';
+  }
+
+  updateAuthUI();
+
+  // ---- Achievements ----
+  const achList = document.getElementById('achList');
+  const earned = wins.length;
+  const badges = [
+    {id:'first', label:'First Win', req:1},
+    {id:'five', label:'5 Wins', req:5},
+    {id:'ten', label:'10 Wins', req:10},
+    {id:'streak3', label:'3 Day Streak', req:0, check: ()=> (parseInt(localStorage.getItem('streak'))||0) >=3 }
+  ];
+
+  function renderBadges(){
+    achList.innerHTML='';
+    badges.forEach(b=>{
+      const el = document.createElement('div');
+      el.className = 'badge';
+      const has = b.check ? b.check() : (earned >= b.req);
+      el.innerHTML = `<div class="icon">${has? '🏆':'🔒'}</div><div class="meta"><strong>${b.label}</strong><div class="req">${b.req? b.req+' wins':''}</div></div>`;
+      if(has) el.classList.add('earned');
+      achList.appendChild(el);
+    });
+  }
+
+  renderBadges();
+
+  // ---- Micro achievement tracker (behavior) ----
+  const maMsg = document.getElementById('ma-msg');
+  const maBar = document.getElementById('ma-bar');
+  const maNext = document.getElementById('ma-next');
+
+  function updateMicro(){
+    const total = wins.length;
+    const streak = parseInt(localStorage.getItem('streak'))||0;
+    // compute next milestone
+    const milestones = [1,5,10,20];
+    let next = milestones.find(m=> total < m) || (total+1);
+    const pct = Math.min(100, Math.round((total/next)*100));
+    maBar.style.width = pct + '%';
+    maNext.textContent = `Next: ${next} wins — ${Math.max(0,next-total)} to go`;
+
+    // encouraging messages
+    const phrases = [
+      'Nice start — keep adding small wins!',
+      'Great — one more and you level up!',
+      'You got this — consistent steps win!',
+      'Streaks build momentum — keep going!'
+    ];
+
+    if(total === 0) maMsg.textContent = 'Start by logging your first small win ✍️';
+    else if(total >= next) maMsg.textContent = `Amazing — you unlocked ${next} wins! 🎉`;
+    else maMsg.textContent = phrases[ total % phrases.length ];
+
+    // auto-notify newly earned badges (simple seen flag)
+    badges.forEach(b=>{
+      const has = b.check ? b.check() : (total >= b.req);
+      const seenKey = 'achSeen-'+b.id;
+      if(has && !localStorage.getItem(seenKey)){
+        // show a short celebration in micro widget
+        const prev = maMsg.textContent;
+        maMsg.textContent = `Congrats — unlocked: ${b.label} 🏆`;
+        localStorage.setItem(seenKey,'1');
+        setTimeout(()=> maMsg.textContent = prev, 3000);
+      }
+    });
+  }
+
+  updateMicro();
+  // update periodically in case user opens other pages
+  setInterval(updateMicro, 3000);
+});
+</script>
+
+</body>
+</html>

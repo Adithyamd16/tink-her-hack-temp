@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register</title>
+</head>
+<body>
+
+<h2>Create Account</h2>
+
+<input id="user" placeholder="Username"><br>
+<input id="pass" type="password" placeholder="Password"><br>
+
+<button onclick="register()">Register</button>
+
+<script>
+function register(){
+
+ let u = document.getElementById("user").value.trim();
+ let p = document.getElementById("pass").value.trim();
+
+ if(!u || !p){
+   alert("Enter username & password");
+   return;
+ }
+
+ let users = JSON.parse(localStorage.getItem("users")) || {};
+
+ if(users[u]){
+   alert("User already exists");
+   return;
+ }
+
+ users[u] = p;
+ localStorage.setItem("users", JSON.stringify(users));
+
+ alert("Account created 👍");
+ location="login.html";
+}
+</script>
+
+</body>
+</html>
